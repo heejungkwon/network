@@ -4,7 +4,6 @@
 #include <arpa/inet.h>
 #include "myheader.h"
 
-/* Function to print the first 16 bytes of packet data */
 void print_packet_data(const u_char* packet, int data_len) {
     printf("Data: ");
     for (int i = 0; i < data_len && i < 16; i++) {
@@ -55,7 +54,6 @@ int main() {
     char filter_exp[] = "tcp";
     bpf_u_int32 net;
 
-    // Step 1: Open live pcap session on NIC with name ens33
     handle = pcap_open_live("ens33", BUFSIZ, 1, 1000, errbuf);
 
     if (handle == NULL) {
@@ -63,7 +61,6 @@ int main() {
         return 1;
     }
 
-    // Step 2: Compile filter_exp into BPF psuedo-code
     if (pcap_compile(handle, &fp, filter_exp, 0, net) == -1) {
         fprintf(stderr, "err %s: %s\n", filter_exp, pcap_geterr(handle));
         return 1;
@@ -74,7 +71,6 @@ int main() {
         return 1;
     }
 
-    // Step 3: Capture packets
     pcap_loop(handle, 0, got_packet, NULL);
 
     pcap_close(handle); // Close the handle
